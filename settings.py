@@ -1,34 +1,43 @@
+screen_settings = {
+    'WIDTH' : 1000,
+    'HEIGHT' : 600
+}
+
 settings = {
     'Plants' : {
         'Sunflower' : {
-            'Health' : 10,
-            'Cost' : 50,
+            'health' : 10,
+            'cost' : 50
         },
-        'Pea_shooter' : {
-            'Health' : 15,
-            'Cost' : 100,
+        'PeaShooter' : {
+            'health' : 15,
+            'cost' : 100
         },
-        'Wall_nut' : {
-            'Health' : 40,
-            'Cost' : 50,
+        'WallNut' : {
+            'health' : 40,
+            'cost' : 75
         },
-        'Tree' : {
-            'Health' : 40,
-            'Cost' : 50,
+        'FireTree' : {
+            'health' : 5,
+            'cost' : 175
         }
     },
+
     'Zombies' : {
-        'Easy_zombie' : {
-            'Health' : 10,
-            'Speed' : .2
-        }
-    },
-    'Items' : {
-        'Sun' : {
-            'Change_angle' : 5
+        'EasyZombie' : {
+            'health' : 10, 
+            'damage' : 1, 
+            'speed' : .2
         },
-        'Pea' : {
-            'Speed' : -5
+        'MediumZombie' : {
+            'health' : 20, 
+            'damage' : 2, 
+            'speed' : .4
+        },
+        'HeavyZombie' : {
+            'health' : 30, 
+            'damage' : 4, 
+            'speed' : .6
         }
     }
 }

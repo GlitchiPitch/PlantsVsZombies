@@ -1,75 +1,44 @@
 import arcade
-import time
+from settings import settings
 
-import animation
+PLANTS_SETTINGS = settings['Plants']
 
-import settings
-import items
-
-SCALE = .15
-
-class Plant(animation.Animation):
+class Plant(arcade.Sprite):
     def __init__(self, image, health, cost):
-        super().__init__(image, SCALE)
+        super().__init__(image, .15)
         self.health = health
         self.cost = cost
-
         self.row = 0
         self.column = 0
-
     def update(self):
         if self.health <= 0:
             self.kill()
-
     def planting(self, x, y, row, column):
         self.set_position(x, y)
         self.row = row
         self.column = column
 
-
 class Sunflower(Plant):
-    def __init__(self, game):
-        prop = settings.settings['Plants']['Sunflower']
-        super().__init__('plants/sun1.png', prop['Health'], prop['Cost'], game)
-        self.append_texture(arcade.load_texture('plants/sun2.png'))
-
-        self.spawn_sun = time.time()
-        self.game = game
-    def update(self):
-        super().update()
-        if time.time() - self.spawn_sun > 5:
-            self.game.suns.append(items.Sun(self.right, self.top))
-            self.spawn_sun = time.time()
-
-class Pea_shooter(Plant):
-    def __init__(self, game):
-        prop = settings.settings['Plants']['Pea_shooter']
-        super().__init__('plants/pea1.png', prop['Health'], prop['Cost'], game)
-        self.shoot_time = time.time()
-        for i in range(1, 3):
-            self.append_texture(arcade.load_texture(f'plants/pea{i}.png'))
-
+    def __init__(self):
+        super().__init__('plants/sun1.png', PLANTS_SETTINGS['Sunflower']['health'], PLANTS_SETTINGS['Sunflower']['cost'])
     def update(self):
         super().update()
 
-class Nut(Plant):
-    def __init__(self, game):
-        prop = settings.settings['Plants']['Wall_nut']
-        super().__init__('plants/nut1.png', prop['Health'], prop['Cost'], game)
-
-        for i in range(1, 3):
-            self.append_texture(arcade.load_texture(f'plants/nut{i}.png'))
-
+class PeaShooter(Plant):
+    def __init__(self):
+        super().__init__('plants/pea1.png', PLANTS_SETTINGS['PeaShooter']['health'], PLANTS_SETTINGS['PeaShooter']['cost'])
     def update(self):
         super().update()
 
-class Tree(Plant):
-    def __init__(self, game):
-        prop = settings.settings['Plants']['Tree']
-        super().__init__('plants/tree1.png', prop['Health'], prop['Cost'], game)
-
-        for i in range(1, 3):
-            self.append_texture(arcade.load_texture(f'plants/tree{i}.png'))
-
+class WallNut(Plant):
+    def __init__(self):
+        super().__init__('plants/nut1.png', PLANTS_SETTINGS['WallNut']['health'], PLANTS_SETTINGS['WallNut']['cost'])
     def update(self):
         super().update()
+
+class FireTree(Plant):
+    def __init__(self):
+        super().__init__('plants/tree1.png', PLANTS_SETTINGS['FireTree']['health'], PLANTS_SETTINGS['FireTree']['cost'])
+    def update(self):
+        super().update()
+
