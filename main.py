@@ -12,29 +12,29 @@ HEIGHT = screen_settings['HEIGHT']
 SPAWN_ZOMBIE_TIME = 5
 ZOMBIE_LIST = [zombies.EasyZombie, zombies.MediumZombie, zombies.HeavyZombie]
 
-LEFT_BORDER = 230
-BOTTOM_BORDER = 35
+LEFT_BORDER = 248
+BOTTOM_BORDER = 24
 
-CELL_WIDTH = 100
-CELL_HEIGHT = 60
+CELL_WIDTH = 78
+CELL_HEIGHT = 100
 
 def find_center_cell_x(x):
     right_x = LEFT_BORDER + CELL_WIDTH
-    row = 0
-    while x < right_x:
+    column = 1
+    while right_x <= x:
         right_x += CELL_WIDTH
-        row += 1
+        column += 1
     center_x = right_x - CELL_WIDTH / 2
-    return center_x, row
+    return center_x, column
 
 def find_center_cell_y(y):
     right_y = BOTTOM_BORDER + CELL_HEIGHT
-    column = 0
-    while y < right_y:
+    line = 1
+    while right_y <= y:
         right_y += CELL_HEIGHT
-        column += 1
+        line += 1
     center_y = right_y - CELL_HEIGHT / 2
-    return center_y, column
+    return center_y, line
 
 
 class Game(arcade.Window):
@@ -46,6 +46,9 @@ class Game(arcade.Window):
         self.plants = arcade.SpriteList()
         self.zombies = arcade.SpriteList()
 
+        self.suns = arcade.SpriteList()
+        self.peas = arcade.SpriteList()
+
         self.taken_cell = []
         self.spawn_zombie_time = 0
 
@@ -56,6 +59,8 @@ class Game(arcade.Window):
 
         self.plants.draw()
         self.zombies.draw()
+        self.suns.draw()
+        self.peas.draw()
 
         if self.seed != None:
             self.seed.draw()
@@ -63,34 +68,42 @@ class Game(arcade.Window):
     def update(self, delta_time):
         self.plants.update()
         self.zombies.update()
+        self.suns.update()
+        self.peas.update()
 
-        # self.spawn_zombie(delta_time)
+        self.spawn_zombie(delta_time)
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
-        print(x,y)
+        # print(x,y)
         if 5 < x < 100:
             if 375 < y < 480:
-                self.seed = plants.Sunflower()
+                self.seed = plants.Sunflower(self)
             if 265 < y < 365:
-                self.seed = plants.PeaShooter()
+                self.seed = plants.PeaShooter(self)
             if 150 < y < 250:
                 self.seed = plants.WallNut()
             if 35 < y < 135:
                 self.seed = plants.FireTree()
-
+        
     def on_mouse_release(self, x: int, y: int, button: int, modifiers: int):
-        if 230 < x < 940 and 35 < y < 520:
-            if self.seed != None:
-                center_x, row = find_center_cell_x(x)
-                center_y, column = find_center_cell_y(y)
-                if not (row, column) == self.taken_cell:
-                    print('add')
-                    self.seed.planting(center_x, center_y, row, column)
-                    self.plants.append(self.seed)
-                    self.seed = None
-                else:
-                    print('taken')
-                    self.seed = None
+        if LEFT_BORDER < x < 950 and BOTTOM_BORDER < y < 524 and self.seed != None:
+            
+            center_x, column = find_center_cell_x(x)
+            center_y, row = find_center_cell_y(y)
+
+            if (row, column) in self.taken_cell:
+                self.seed = None
+                return
+            
+            self.taken_cell.append((row, column))
+
+            self.seed.planting(center_x, center_y, row, column)
+            self.plants.append(self.seed)
+            self.seed = None
+
+        else:
+            self.seed = None
+
     def on_mouse_motion(self, x: int, y: int, dx: int, dy: int):
         if self.seed != None:
             self.seed.set_position(x, y)

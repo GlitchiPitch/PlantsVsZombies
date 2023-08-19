@@ -7,11 +7,11 @@ SCREEN_SETTINGS = settings.screen_settings
 
 class Zombie(arcade.Sprite):
     def __init__(self, image, health, damage, speed):
-        super().__init__(image, .11)
+        super().__init__(image, .09)
         self.health = health
         self.damage = damage
 
-        self.column = 0
+        self.line = 0
         self.speed = speed
         self.eating = False
 
@@ -23,9 +23,12 @@ class Zombie(arcade.Sprite):
         
         self.center_x -= self.change_x
 
-    def spawn(self, y, column):
-        self.set_position(SCREEN_SETTINGS['WIDTH'], y)
-        self.column = column
+        if self.health <= 0:
+            self.kill()
+
+    def spawn(self, y, line):
+        self.set_position(SCREEN_SETTINGS['WIDTH'], y + 10)
+        self.line = line
 
 class EasyZombie(Zombie):
     def __init__(self):

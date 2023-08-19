@@ -7,11 +7,13 @@ settings = {
     'Plants' : {
         'Sunflower' : {
             'health' : 10,
-            'cost' : 50
+            'cost' : 50,
+            'spawnSunTime' : 10
         },
         'PeaShooter' : {
             'health' : 15,
-            'cost' : 100
+            'cost' : 100,
+            'reloadTime' : 5
         },
         'WallNut' : {
             'health' : 40,
@@ -38,6 +40,14 @@ settings = {
             'health' : 30, 
             'damage' : 4, 
             'speed' : .6
+        }
+    },
+    'Items' : {
+        'Pea' : {
+            'speed' : 5
+        },
+        'Sun' : {
+            'lifeTime' : 15
         }
     }
 }
